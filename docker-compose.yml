@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  node-app:
+    restart: always
+    build: ./chatbot_backend
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URL=mongodb://mongo:27017/chatbotapp_backend
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - 'mongo-data:/data/db'
+    networks:
+      - app-network
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+    ports:
+      - '8081:8081'
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
