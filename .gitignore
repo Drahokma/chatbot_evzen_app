@@ -121,6 +121,9 @@ build
 # DynamoDB Local files
 .dynamodb/
 
+#mongo DB data
+.data/
+
 # TernJS port file
 .tern-port
 
